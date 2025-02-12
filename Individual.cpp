@@ -32,14 +32,16 @@ unique_ptr<ZT[]> Individual<ZT,FT>::YtoX(ZT* y,unique_ptr<FT[]>* mu, int dim) {
     return x;
 }
 template<class ZT,class FT>
-Individual<ZT,FT>::Individual(int dim, unique_ptr<FT[]>* mu, FT* alpha, unique_ptr<ZT[]>* B, FT* Bstar) {
+Individual<ZT,FT>::Individual(int dim, unique_ptr<FT[]>* mu, FT* alpha, unique_ptr<ZT[]>* B,ZT* length, ZT totLength) {
 
     this->x = make_unique<ZT[]>(dim);
     this->y = make_unique<ZT[]>(dim);
+    this->bitvec = make_unique<bool[]>(totLength.get_si());
     this->dim = dim;
     unique_ptr<ZT[]> alpha_r=make_unique<ZT[]>(dim);
     for(int i=0;i<dim;i++)
     {
+        if(i<dim/2) continue;
         FT temp=alpha[i];
         alpha[i].floor(alpha[i]);
         ZT use;
@@ -66,7 +68,13 @@ Individual<ZT,FT>::Individual(int dim, unique_ptr<FT[]>* mu, FT* alpha, unique_p
         // cout<<endl;
     unique_ptr<ZT[]> vect = (matrix_multiply(x.get(), B, dim));
     this->norm = get_norm(vect.get(), dim);
-    // delete[] vect;
+    this->bitvec = (encode(y.get(),length,totLength));
+    cout<<"tot length "<<totLength.get_si()<<endl;
+    for(int i=0;i<totLength.get_si();i++){
+        cout<<this->bitvec[i]<<" ";
+    }
+    cout<<endl;
+
 }
 template<class ZT,class FT>
 Individual<ZT,FT>::~Individual() 
@@ -186,4 +194,44 @@ Individual<ZT, FT>& Individual<ZT, FT>::operator=(Individual &&t) noexcept {
     }
     return *this;
 }
+
+template<class ZT,class FT>
+unique_ptr<bool[]>  Individual<ZT,FT>::encode(ZT* y, ZT* length, ZT totalLength) {
+
+    // for(int i=0;i<dim;i++){
+    //     cout<<y[i]<<" ";
+    // }
+    // cout<<endl;
+    // cout<<"totlengrh "<<totalLength<<endl;
+    unique_ptr<bool[]>  chromosome = make_unique<bool[]>((int)totalLength.get_d());
+    ZT tot;
+    tot = (long)0;
+    for (int i = 0; i < dim; i++) {
+        bool sign = 0;
+        ZT element = y[i];
+        if (y[i] < (long)0) {
+            sign = 1;
+            element.neg(element);
+        }
+        else if(y[i] == 0){
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<int> distribution(0, 1);
+            sign = distribution(gen);
+        }
+        ZT curEl = y[i];
+        for (int j = tot.get_d() + length[i].get_d() - 1; j > tot.get_d(); j--) {
+            ZT curBit, mod_;
+            mod_=(long)2;
+            curBit.mod(curEl, mod_);
+            chromosome[j] = (int)curBit.get_d();
+            curEl.div_2si(curEl, 1);//divide by 2^1
+        }
+        chromosome[(int)tot.get_d()] = sign;
+        tot.add(tot, length[i]);
+    }
+    return chromosome;
+}
+
 template class Individual<Z_NR<mpz_t>,FP_NR<mpfr_t>>;
+

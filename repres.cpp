@@ -196,14 +196,14 @@ void repres<ZT,FT>::initialise(Individual<ZT,FT>v0) {
     }
     
     for (int i = 1; i < pop_size; i++) {
-        population[i] =  Individual<ZT, FT>(dim, (preprocess->mu).get(), alpha.get(), (preprocess->B).get(), (preprocess->Bstar).get());
+        population[i] =  Individual<ZT, FT>(dim, (preprocess->mu).get(), alpha.get(), (preprocess->B).get(), length.get(),  totLength);
         if(population[i].norm == 0.0){
             i--;
         }
     }
     for(int i=0;i<pop_size;i++){
-        for(int j=0;j<dim;j++){
-            cout<<population[i].y[j]<<" ";
+        for(int j=0;j<totLength.get_si();j++){
+            cout<<population[i].bitvec[j]<<" ";
         }
         cout<<endl;
     }
