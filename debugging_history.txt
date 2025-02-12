@@ -1,0 +1,213 @@
+
+cout<<"f ";
+printvec(f);
+cout<<"g ";
+printvec(g); 
+ 
+           cout<<"end of round"<<endl;
+            cout<<"f ";
+            printvec(f);
+            cout<<"g ";
+            printvec(g);
+            cout<<"b ";
+            printvec(b);
+            cout<<"c ";
+            printvec(c);
+
+// for(int i=0;i<dim;i++){
+        //     cout<<preprocess->B[0][i]<<" ";
+        // }
+        // cout<<endl;
+
+
+ cout<<"alphas"<<endl;
+    for(int i=0;i<dim;i++){
+        cout<<alpha[i]<<" ";
+    }
+    cout<<endl;        
+
+
+
+FT norm = 0.0;
+    for (int i = 0; i < dim; ++i) {
+        FT use;
+        use.set_z(vect[i]);
+        norm += use * use;
+    }
+    cout<<"vector norm. "<<sqrt(norm)<<endl;
+    norm = 0.0;
+    for (int i = 0; i < dim; ++i) {
+        FT use;
+        use.set_z(old_B.get()[0][i]);
+        // FT use=old_B.get()[0][i];
+        norm += use * use;
+    }
+
+    cout<<"first vector "<<sqrt(norm)<<endl;    
+
+
+ cout<<"in preprorcessing"<<endl;
+    // writeMatrixToFile(Bstar_mat, "bstar_print");
+    for(int i=0;i<dim;i++){
+        cout<<Bstar[0].get()[i]<<" ";
+    }
+    cout<<endl;    
+
+
+ // for(int i=0;i<dim;i++){
+    //     cout<<B[0][i]<<" ";
+    // }
+    // cout<<endl;
+
+
+cout<<"count of number of zero rows in A"<<count<<endl;
+    cout<<"index of all zero row in A"<<zero_row<<endl;
+
+    // if(zero_row == -1){
+    //     cout<<"Error loading new basis"<<endl;
+    // }    
+
+
+// writeMatrixToFile(A,"initial_A.txt");
+        // ZZ_mat<mpz_t>test_A(dim+1,dim);
+        // for(int i=0;i<dim;i++){
+        //     for(int j=0;j<dim;j++){
+        //         test_A[i][j] = A[i][j];
+        //     }
+        // }
+        // for(int i=0;i<dim;i++){
+        //     test_A[dim][i] = A[dim-1][i];
+        // }
+        // writeMatrixToFile(A,"initial_testA.txt");
+
+
+ cout<<"first guy in population"<<endl;
+        for(int i=0;i<dim;i++){
+            cout<<population[0].x.get()[i]<<" ";
+        }
+        cout<<endl;            
+
+// for(int i=0;i<popObj->totLength.get_d();i++){
+        //     cout<<a.get()[i]<<" ";
+        // }
+        // cout<<endl;
+        // cout<<"final chromosome"<<endl;
+        unique_ptr<ZT[]> tempa = popObj->decode(a.get());        
+
+
+
+ // cout<<"initial chromosome"<<endl;
+        // for(int i=0;i<popObj->dim;i++){
+        //     cout<<popObj->population[z].y.get()[i]<<" ";
+        // }
+        // cout<<endl;        
+
+
+ // delete[]a;
+        // delete[]b;
+        // delete[]crossed;
+        // delete[]mutated;        
+
+for(int i=0;i<dim;i++){
+cout<<vect.get()[i]<<" ";
+}
+
+cout<<endl;
+
+
+
+
+
+// };
+
+// int main(){
+//     int n = 20;
+//     int p =3;
+//     int d = n/3;
+//     int q = 64;
+    
+//     NTRU* n1 = new NTRU(n,p,q,d);
+//     n1->createkey();
+//     // for(int i=0;i<n1->f->coeff.size();i++){
+//     //     cout<<n1->f->coeff[i]<<" ";
+//     // }
+//     // cout<<endl;
+//     // cout<<"below f"<<endl;
+//     printvec(n1->f->coeff);
+//     printvec(n1->g->coeff);
+//     printvec(n1->Fp->coeff);
+//     printvec(n1->Fq->coeff);
+//     printvec(n1->h->coeff);
+
+//     n1->generate_lattice();
+//     // vector<int> f_inverse_p;
+//     // vector<int> f_inverse_q;
+//     // while(true){
+//     //     n1->sample();
+//     //     f_inverse_p = n1->f->inversep(p);
+//     //     f_inverse_q = n1->f->inverse_p_power_r(2,1);
+//     //     vector<int> modp_ans = vector_mul(n1->f->coeff, f_inverse_p, p);
+//     //     vector<int> modq_ans = vector_mul(n1->f->coeff, f_inverse_q, q);
+//     //     if(f_inverse_p.size()>0 && f_inverse_q.size()>0 && is_one(modp_ans) && is_one(modq_ans)){
+//     //         break;
+//     //     }
+//     // }
+//     // printvec(n1->f->coeff);
+//     // printvec(f_inverse_p);
+//     // printvec(f_inverse_q);
+//     // printvec(n1->g->coeff);
+
+
+//     // vector<int> mul = vector_mul(n1->f->coeff, f_inverse_p, p);
+//     // printvec(mul);
+
+//     // for(int i=0;i<n1->f->coeff.size();i++){
+//     //     cout<<n1->f->coeff[i]<<" ";
+//     // }
+//     // cout<<endl;
+//     // for(int i=0;i<n1->g->coeff.size();i++){
+//     //     cout<<n1->g->coeff[i]<<" ";
+//     // }
+
+//     // Poly* a =new Poly(3);
+//     // a->coeff = {0,1,0};
+//     // vector<int> ans = a->inverse2();
+//     // for(int i=0;i<ans.size();i++){
+//     //     cout<<ans[i]<<" ";
+//     // }
+//     // cout<<endl;
+
+//     // Poly* b =new Poly(11);
+//     // b->coeff = {0, 0, 1, 1, 0, 1, 1, 0, -1, -1, -1};
+//     // b->coeff = {1, -1, 0, 0, 1, -1, 1, 1, -1, 0, 0};
+//     // vector<int> ans2 = b->inverse_p_power_r(2,6);
+//     // vector<int> ans2 = b->inverse_p_power_r(2,6);
+//     // vector<int> ans2 = b->inverse2();
+//     // for(int i=0;i<ans2.size();i++){
+//     //     cout<<ans2[i]<<" ";
+//     // }
+//     // cout<<endl;
+
+
+  
+
+//     return 0;
+// }
+
+
+
+ for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            cout<<preprocess->B[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+
+    cout<<"B star , Bi norm "<<endl;
+    for(int i=0;i<dim;i++){
+        cout<<i<<" "<<preprocess->Bstar[i]<<" "<<get_norm((preprocess->B[i]).get(),dim)<<endl;
+    }
+    cout<<endl;
+
+
