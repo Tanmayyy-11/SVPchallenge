@@ -217,7 +217,7 @@ unique_ptr<ZT[]>  Paper1<ZT, FT>::runGA(FT targetNorm, int k,Individual<ZT,FT> v
     // }
     // v0.norm = popObj->population[0].norm;
     // cout<<"Sorting Complete\n";
-    Individual<ZT,FT> v0 (popObj->population[0]);
+    Individual<ZT,FT> v0 (popObj->population[0])
     // cout<<"Copy Working\n";
 
     int iter;

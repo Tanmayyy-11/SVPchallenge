@@ -202,7 +202,7 @@ void repres<ZT,FT>::initialise(Individual<ZT,FT>v0) {
         }
     }
     for(int i=0;i<pop_size;i++){
-        for(int j=0;j<totLength.get_si();j++){
+        for(int j=0;j<dim;j++){
             cout<<population[i].bitvec[j]<<" ";
         }
         cout<<endl;

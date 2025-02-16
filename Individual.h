@@ -20,6 +20,7 @@ public:
     unique_ptr<ZT[]>x;
     unique_ptr<ZT[]>y;
     unique_ptr<bool[]>bitvec;
+    ZT totLength;
     FT get_norm(ZT* vect, int dim);
     unique_ptr<ZT[]>  matrix_multiply(ZT* vec, unique_ptr<ZT[]>* mat, int dim);
     unique_ptr<ZT[]>  YtoX(ZT* y,unique_ptr<FT[]>* mu,int dim);

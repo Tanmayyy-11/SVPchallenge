@@ -37,6 +37,7 @@ Individual<ZT,FT>::Individual(int dim, unique_ptr<FT[]>* mu, FT* alpha, unique_p
     this->x = make_unique<ZT[]>(dim);
     this->y = make_unique<ZT[]>(dim);
     this->bitvec = make_unique<bool[]>(totLength.get_si());
+    this->totLength=totLength;
     this->dim = dim;
     unique_ptr<ZT[]> alpha_r=make_unique<ZT[]>(dim);
     for(int i=0;i<dim;i++)
@@ -68,7 +69,7 @@ Individual<ZT,FT>::Individual(int dim, unique_ptr<FT[]>* mu, FT* alpha, unique_p
         // cout<<endl;
     unique_ptr<ZT[]> vect = (matrix_multiply(x.get(), B, dim));
     this->norm = get_norm(vect.get(), dim);
-    this->bitvec = (encode(y.get(),length,totLength));
+    bitvec = (encode(y.get(),length,totLength));
     cout<<"tot length "<<totLength.get_si()<<endl;
     for(int i=0;i<totLength.get_si();i++){
         cout<<this->bitvec[i]<<" ";
@@ -115,6 +116,7 @@ Individual<ZT, FT>::Individual(const Individual &t) {
     // cout<<"1\n";
     this->dim = t.dim;
     this->norm = t.norm;
+    this->totLength = t.totLength;
 
     // Deep copy the unique_ptr<ZT[]> x
     if (t.x) {
@@ -152,21 +154,40 @@ Individual<ZT, FT>::Individual(const Individual &t) {
         // If the original y was null, keep the new one null as well
         this->y = nullptr;
     }
+
+
+    // Deep copy the unique_ptr<ZT[]> y
+    if (t.bitvec) {
+        // Allocate new memory for y in the copied object
+        // cout<<dim<<"\n";
+        this->bitvec = std::make_unique<bool[]>(totLength.get_si());
+        // Copy the elements from the original object's y array
+        // std::copy(t.y.get(), t.y.get() + dim, this->y.get());
+        for(int i = 0;i<totLength.get_si();i++)bitvec[i] = t.bitvec[i];
+
+    } else {
+        // If the original y was null, keep the new one null as well
+        this->bitvec = nullptr;
+    }
+
+    
     // cout<<"Copy Done\n";
 }
 template<class ZT, class FT>
-Individual<ZT, FT>::Individual(Individual &&t) noexcept : dim(t.dim), norm(t.norm), x(std::move(t.x)), y(std::move(t.y)) {
+Individual<ZT, FT>::Individual(Individual &&t) noexcept : dim(t.dim), norm(t.norm),totLength(t.totLength), x(std::move(t.x)), y(std::move(t.y)), bitvec(std::move(t.bitvec)){
     // cout<<"2\n";
     // Leave t in a valid state
     t.dim = 0;
     t.norm = FT();  // Reset the norm
+    t.totLength = ZT();
 }
 template<class ZT, class FT>
 Individual<ZT, FT>& Individual<ZT, FT>::operator=(const Individual &t) {
-    // cout<<"3\n";
+
     if (this != &t) {
         dim = t.dim;
         norm = t.norm;
+        totLength = t.totLength;
         if (t.x) {
             x = std::make_unique<ZT[]>(dim);
             for(int i = 0;i<dim;i++)x[i] = t.x[i];
@@ -175,22 +196,30 @@ Individual<ZT, FT>& Individual<ZT, FT>::operator=(const Individual &t) {
             y = std::make_unique<ZT[]>(dim);
             for(int i = 0;i<dim;i++)y[i] = t.y[i];
         }
+        if (t.bitvec) {
+            bitvec = std::make_unique<bool[]>(totLength.get_si());
+            for(int i = 0;i<totLength.get_si();i++)bitvec[i] = t.bitvec[i];
+        }
     }
     // cout<<"done\n";
     return *this;
 }
 template<class ZT, class FT>
 Individual<ZT, FT>& Individual<ZT, FT>::operator=(Individual &&t) noexcept {
-    // cout<<"4\n";
+
     if (this != &t) {
         dim = t.dim;
         norm = t.norm;
         x = std::move(t.x);
         y = std::move(t.y);
+        bitvec = std::move(t.bitvec);
+        totLength = std::move(t.totLength);
+
         
         // Leave t in a valid state
         t.dim = 0;
         t.norm = FT();
+        t.totLength = ZT();
     }
     return *this;
 }
