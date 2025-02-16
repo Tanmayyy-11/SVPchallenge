@@ -140,49 +140,19 @@ unique_ptr<Individual<ZT,FT>[]> Paper1<ZT, FT>::runCrossMut(int dim, int k) {
     // }
     // newPop[0].norm = popObj->population[0].norm;
     newPop[0] = popObj->population[0];
-    cout<<"Herisfine\n";
 
     for(int i = 1;i<popObj->pop_size;i++)
     { 
-        cout<<"inside loop agin"<<endl;
-        // unique_ptr<bool[]> a =  (popObj->encode(popObj->population[selection()].y.get(),popObj->totLength));
-        // unique_ptr<bool[]> a = popObj->population[selection()].bitvec;
-        // unique_ptr<bool[]> b = popObj->population[selection()].bitvec;
-        // unique_ptr<bool[]> b = (popObj->encode(popObj->population[selection()].y.get(),popObj->totLength));
-        // cout<<"encoded"<<endl;
-        // cout<<
-        // bool *a = popObj->population[0].bitvec.get();
-        // bool *a = popObj->population[selection()].bitvec.get();
-        // cout<<"a assigned"<<endl;
-        for(int i=0;i<5;i++){
-            cout<<popObj->population[0].bitvec[i]<<"wefqwef ";
-        }
-        cout<<endl;
         unique_ptr<bool[]> crossed = (cross(popObj->population[selection()].bitvec.get(),popObj->population[selection()].bitvec.get(),popObj->totLength));
-        cout<<"crossed"<<endl;
-        // unique_ptr<bool[]> mutated  = (mutation(crossed.get(),popObj->totLength));
         newPop[i].bitvec = mutation(crossed.get(),popObj->totLength);
-        for(int j=0;j<dim;j++){
-            cout<<newPop[i].bitvec[j]<<" ";
-        }
-        cout<<endl;
-        // cout<<"after mut"<<endl;
-        // newPop[i].bitvec = mutated;
         newPop[i].y =  popObj->decode(newPop[i].bitvec.get());
         newPop[i].x = newPop[i].YtoX(newPop[i].y.get(),popObj->get_mu(),popObj->dim);
         newPop[i].norm = newPop[i].get_norm(newPop[i].matrix_multiply(newPop[i].x.get(),popObj->get_B(),popObj->dim).get(),popObj->dim);
         newPop[i].dim = dim;
         if(newPop[i].norm==0)
         {
-            // delete[] newPop[i].y;
-            // delete[] newPop[i].x;
             i--;
         }
-    //    cout<<i<<" "<<newPop[i].norm<<'\n';
-        // delete[]a;
-        // delete[]b;
-        // delete[]crossed;
-        // delete[]mutated;
     }
     return newPop;
 }
@@ -217,7 +187,7 @@ unique_ptr<ZT[]>  Paper1<ZT, FT>::runGA(FT targetNorm, int k,Individual<ZT,FT> v
     // }
     // v0.norm = popObj->population[0].norm;
     // cout<<"Sorting Complete\n";
-    Individual<ZT,FT> v0 (popObj->population[0])
+    Individual<ZT,FT> v0 (popObj->population[0]);
     // cout<<"Copy Working\n";
 
     int iter;
@@ -228,9 +198,7 @@ unique_ptr<ZT[]>  Paper1<ZT, FT>::runGA(FT targetNorm, int k,Individual<ZT,FT> v
     bool improved = false;
     while(v0.norm>targetNorm)
     {
-        cout<<"Inside For loop\n";
         popObj->population = runCrossMut(popObj->dim,k);
-        cout<<"CrossMut done\n";
         sort(popObj->population.get(),popObj->population.get()+popObj->pop_size,compare);
         // if(iter %1000 ==0){
             cout<<iter<<"\n";

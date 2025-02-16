@@ -153,6 +153,8 @@ void repres<ZT,FT>::initialise(Individual<ZT,FT>v0) {
         population[0].norm = population[0].get_norm(vect.get(),dim);
         cout<<population[0].norm<<" first vector norm"<<endl;
         population[0].dim = dim;
+        population[0].bitvec = population[0].encode(population[0].y.get(),length.get(),totLength);
+        population[0].totLength = totLength;
     }
     else{ 
         population[0] = v0;
@@ -185,14 +187,11 @@ void repres<ZT,FT>::initialise(Individual<ZT,FT>v0) {
         totLength = 0;
         for(int i = 0;i<dim;i++)
         {
-            // alpha[i] = normB0/get_norm((preprocess->Bstar[i]).get(),dim);
             alpha[i] = normB0/preprocess->Bstar[i];
             length[i] .set_f(floor(log(alpha[i])/log2)+FT(2));
             if(alpha[i]<1)length[i].set_f(FT(2));
             totLength.add(totLength,length[i]);
         }
-        cout<<"here"<<endl;
-
     }
     
     for (int i = 1; i < pop_size; i++) {
@@ -201,16 +200,6 @@ void repres<ZT,FT>::initialise(Individual<ZT,FT>v0) {
             i--;
         }
     }
-    for(int i=0;i<pop_size;i++){
-        for(int j=0;j<dim;j++){
-            cout<<population[i].bitvec[j]<<" ";
-        }
-        cout<<endl;
-    }
-
-    // for (int i = 1; i < pop_size; i++) {
-    //     cout<<i<<" "<< population[1].y<<endl;
-    // }
 
 
 }
