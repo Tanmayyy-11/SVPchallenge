@@ -27,7 +27,7 @@ void writeMatrixToFile(ZZ_mat<T>& matrix, const std::string& filename) {
 template<class ZT, class FT>
 void preProcessing<ZT, FT>::initialProcessing(ZZ_mat<mpz_t>& A, int flags_bkz, int flags_gso, int prec, FloatType float_type) {
     dim = A.get_rows();
-    int status = bkz_reduction(A, 6, flags_bkz, float_type,prec);
+    int status = bkz_reduction(A, 7, flags_bkz, float_type,prec);
     MatGSO<ZT, FT> M(A, U, UT, flags_gso);
     M.update_gso();
     writeMatrixToFile(A,"after_bkz.txt");

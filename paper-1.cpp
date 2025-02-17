@@ -146,6 +146,10 @@ unique_ptr<Individual<ZT,FT>[]> Paper1<ZT, FT>::runCrossMut(int dim, int k) {
         unique_ptr<bool[]> crossed = (cross(popObj->population[selection()].bitvec.get(),popObj->population[selection()].bitvec.get(),popObj->totLength));
         newPop[i].bitvec = mutation(crossed.get(),popObj->totLength);
         newPop[i].y =  popObj->decode(newPop[i].bitvec.get());
+        // for(int j=0;j<dim;j++){
+        //     cout<<newPop[i].y[j]<< " ";
+        // }
+        // cout<<endl;
         newPop[i].x = newPop[i].YtoX(newPop[i].y.get(),popObj->get_mu(),popObj->dim);
         newPop[i].norm = newPop[i].get_norm(newPop[i].matrix_multiply(newPop[i].x.get(),popObj->get_B(),popObj->dim).get(),popObj->dim);
         newPop[i].dim = dim;
